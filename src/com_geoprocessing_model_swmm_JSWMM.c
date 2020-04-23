@@ -90,10 +90,11 @@ JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getError
 }
 
 /*
- * return current simualation time, a string format "year month day hour minute second"
+ * return the simualation time, a string format "year month day hour minute second"
+ * jtype=0,StartDateTime; jtype=1,EndDateTime; jtype=2,ReportStart; jtype=3,currenttime;
  */
-JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getCurrentSimualationTime
-	(JNIEnv *env, jobject jobj){
+JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getSimulationDateTime
+	(JNIEnv *env, jobject jobj, jint jtype){
 		int year=0;
 		int month=0;
 		int day=0;
@@ -109,9 +110,12 @@ JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getCurrentSimu
 		char *csecond = "";
 		char *ctime=(char *) malloc(20);
 		
-
-		swmm_getCurrentDateTime(&year, &month, &day,&hour, &minute, &second);
-
+		if( jtype==0||jtype==1||jtype==2){
+			swmm_getSimulationDateTime(jtype,&year, &month, &day,&hour, &minute, &second);
+		}else{
+			swmm_getCurrentDateTime(&year, &month, &day,&hour, &minute, &second);
+		}
+		
 		//itoa(year,cyear, 10);
 		sprintf(cyear, "%d", year);
 		strcpy(ctime,cyear);
@@ -148,7 +152,6 @@ JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getCurrentSimu
 		return charToJstring(env,ctime);
 }
 
-
 /*
 * @return the index (if >= 0) or the error code (if <0, needs to multiply by -1)
  */
@@ -163,6 +166,50 @@ JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_findObjectIndex
 			return errorCode*(-1);
 
 		return index;
+}
+
+/*
+ * @return the count number of the target type,the error code (if <0, needs to multiply by -1)
+ */
+JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_countObjects
+	(JNIEnv *env, jobject jobj, jint jtype){
+		int count = 0;
+		int errorCode = swmm_countObjects(jtype, &count);
+
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return count;
+}
+
+JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getObjectId
+	(JNIEnv *env, jobject jobj, jint jtype, jint jindex){
+		char * id = "";
+		int errocode = swmm_getObjectId(jtype,jindex,id);
+
+		return charToJstring(env,id);
+}
+
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getNodeParam
+	(JNIEnv *env, jobject jobj, jint jindex, jint jparamType){
+		double value = 0;
+
+		int errorCode = swmm_getNodeParam(jindex,jparamType,&value);
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return value;
+}
+
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getLinkParam
+	(JNIEnv * env, jobject jobj, jint jindex, jint jparam){
+		double value = 0;
+
+		int errorCode = swmm_getLinkParam(jindex,jparam,&value);
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return value;
 }
 
 /*
@@ -185,3 +232,35 @@ JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_setGagePrecip
 		return swmm_setGagePrecip(jindex,jprecipiation);
 }
 
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getSubcatchResult
+	(JNIEnv *env, jobject jobj, jint jindex, jint jtype){
+		double value =0;
+		int errorCode = swmm_getSubcatchParam(jindex,jtype,&value);
+
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return value;
+}
+
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getLinkResult
+	(JNIEnv *env, jobject obj, jint index, jint resType){
+		double value =0;
+		int errorCode = swmm_getLinkResult(index,resType,&value);
+
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return value;
+}
+
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getNodeResult
+	(JNIEnv *env, jobject obj, jint index, jint resType){
+		double value =0;
+		int errorCode = swmm_getNodeResult(index,resType,&value);
+
+		if(errorCode!=0)
+			return errorCode*(-1);
+
+		return value;
+}

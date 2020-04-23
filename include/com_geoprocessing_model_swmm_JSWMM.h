@@ -89,11 +89,11 @@ JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getWarnings
 
 /*
  * Class:     com_geoprocessing_model_swmm_JSWMM
- * Method:    getCurrentSimualationTime
- * Signature: ()Ljava/lang/String;
+ * Method:    getSimulationDateTime
+ * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getCurrentSimualationTime
-  (JNIEnv *, jobject);
+JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getSimulationDateTime
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     com_geoprocessing_model_swmm_JSWMM
@@ -102,6 +102,38 @@ JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getCurrentSimu
  */
 JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_findObjectIndex
   (JNIEnv *, jobject, jint, jstring);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    countObjects
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_countObjects
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getObjectId
+ * Signature: (II)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getObjectId
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getNodeParam
+ * Signature: (II)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getNodeParam
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getLinkParam
+ * Signature: (II)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getLinkParam
+  (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     com_geoprocessing_model_swmm_JSWMM
@@ -118,6 +150,30 @@ JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getGagePrecip
  */
 JNIEXPORT jint JNICALL Java_com_geoprocessing_model_swmm_JSWMM_setGagePrecip
   (JNIEnv *, jobject, jint, jdouble);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getSubcatchResult
+ * Signature: (II)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getSubcatchResult
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getLinkResult
+ * Signature: (II)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getLinkResult
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_geoprocessing_model_swmm_JSWMM
+ * Method:    getNodeResult
+ * Signature: (II)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_geoprocessing_model_swmm_JSWMM_getNodeResult
+  (JNIEnv *, jobject, jint, jint);
 
 #ifdef __cplusplus
 }
